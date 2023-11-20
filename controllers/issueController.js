@@ -43,8 +43,7 @@ class IssueController {
   async getOne(req, res) {
     const { id } = req.params
     const task = await Task.findOne({
-      where: { id },
-      include: [{ model: TaskInfo, as: 'info' }]
+      where: { id }
     })
     return res.json(task)
   }

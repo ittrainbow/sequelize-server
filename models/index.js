@@ -15,6 +15,7 @@ const Task = sequelize.define('issue', {
   description: { type: DataTypes.STRING },
   issue: { type: DataTypes.STRING },
   problem: { type: DataTypes.STRING },
+  projectname: { type: DataTypes.STRING },
   severity: { type: DataTypes.STRING },
   solution: { type: DataTypes.STRING },
   status: { type: DataTypes.STRING },
