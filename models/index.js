@@ -8,7 +8,7 @@ const User = sequelize.define('user', {
   role: { type: DataTypes.STRING, defaultValue: 'USER' }
 })
 
-const Task = sequelize.define('issue', {
+const Ticket = sequelize.define('ticket', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   created: { type: DataTypes.BIGINT },
   createdAt: { type: DataTypes.DATE },
@@ -32,14 +32,14 @@ const Project = sequelize.define('project', {
   name: { type: DataTypes.STRING }
 })
 
-Project.hasOne(Task)
-Task.belongsTo(Project)
+Project.hasOne(Ticket)
+Ticket.belongsTo(Project)
 
-User.hasMany(Task)
-Task.belongsTo(User)
+User.hasMany(Ticket)
+Ticket.belongsTo(User)
 
 module.exports = {
   User,
-  Task,
+  Ticket,
   Project
 }

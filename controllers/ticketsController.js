@@ -1,9 +1,9 @@
 const uuid = require('uuid')
 const path = require('path')
-const { Task } = require('../models')
+const { Ticket } = require('../models')
 const ErrorApi = require('../error')
 
-class IssueController {
+class TicketsController {
   async create(req, res, next) {
     try {
       let {
@@ -21,7 +21,7 @@ class IssueController {
         touched,
         toucher
       } = req.body
-      const task = await Task.create({
+      const ticket = await Ticket.create({
         id,
         created,
         creator,
@@ -48,7 +48,7 @@ class IssueController {
         )
       }
 
-      return res.json(task)
+      return res.json(ticket)
     } catch (e) {
       next(ErrorApi.badRequest(e.message))
     }
@@ -56,19 +56,19 @@ class IssueController {
 
   async getAll(req, res) {
     const { id } = req.params
-    const issues = await Task.findAll({
+    const tickets = await Ticket.findAll({
       where: { projectid: id }
     })
-    return res.json(issues)
+    return res.json(tickets)
   }
 
   async getOne(req, res) {
     const { id } = req.params
-    const task = await Task.findOne({
+    const ticket = await Ticket.findOne({
       where: { id }
     })
-    return res.json(task)
+    return res.json(ticket)
   }
 }
 
-module.exports = new IssueController()
+module.exports = new TicketsController()

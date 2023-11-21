@@ -1,4 +1,4 @@
-const { Project, Task } = require('../models')
+const { Project, Ticket } = require('../models')
 const ErrorApi = require('../error')
 
 class ProjectsController {
@@ -23,7 +23,7 @@ class ProjectsController {
 
   async getTickets(req, res) {
     const { id } = req.params
-    const tickets = await Task.findAll({
+    const tickets = await Ticket.findAll({
       where: { id }
     })
     return res.json(tickets)
