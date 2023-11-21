@@ -6,8 +6,21 @@ const ErrorApi = require('../error')
 class IssueController {
   async create(req, res, next) {
     try {
-      let { id, created, creator, description, issue, number, problem, severity, solution, status, touched, toucher } =
-        req.body
+      let {
+        id,
+        created,
+        creator,
+        description,
+        issue,
+        number,
+        problem,
+        projectid,
+        severity,
+        solution,
+        status,
+        touched,
+        toucher
+      } = req.body
       const task = await Task.create({
         id,
         created,
@@ -16,6 +29,7 @@ class IssueController {
         issue,
         number,
         problem,
+        projectid,
         severity,
         solution,
         status,
@@ -38,6 +52,14 @@ class IssueController {
     } catch (e) {
       next(ErrorApi.badRequest(e.message))
     }
+  }
+
+  async getAll(req, res) {
+    const { id } = req.params
+    const issues = await Task.findAll({
+      where: { projectid: id }
+    })
+    return res.json(issues)
   }
 
   async getOne(req, res) {

@@ -4,6 +4,8 @@ const issueController = require('../controllers/issueController')
 
 router.post('/:id', issueController.create)
 
+router.get('/', issueController.getAll)
+
 router.get('/:id', issueController.getOne)
 
 module.exports = router
