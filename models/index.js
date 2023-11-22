@@ -16,7 +16,6 @@ const Ticket = sequelize.define('ticket', {
   issue: { type: DataTypes.STRING(2000) },
   problem: { type: DataTypes.STRING(20) },
   projectid: { type: DataTypes.STRING },
-  number: { type: DataTypes.INTEGER },
   severity: { type: DataTypes.STRING(20) },
   solution: { type: DataTypes.STRING(2000) },
   status: { type: DataTypes.STRING(20) },

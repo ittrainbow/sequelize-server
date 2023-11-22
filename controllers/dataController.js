@@ -19,12 +19,12 @@ class DataController {
 
   async createTicket(req, res, next) {
     try {
-      let { creator, description, issue, number, problem, projectid, severity, solution, status } = req.body
-      const ticketData = { description, issue, number, problem, projectid, severity, solution, status }
+      let { creator, description, issue, problem, projectid, severity, solution, status } = req.body
+      const ticketData = { description, issue, problem, projectid, severity, solution, status }
       const ticketUser = {
         created: new Date().getTime(),
-        creator,
         touched: new Date().getTime(),
+        creator,
         toucher: creator
       }
       const ticket = await Ticket.create({ ...ticketData, ...ticketUser })
@@ -48,8 +48,7 @@ class DataController {
 
   async deleteTicket(req, res, next) {
     try {
-      const ticket = req.body
-      const { id } = ticket
+      const id = Number(req.body.id)
       await Ticket.destroy({ where: { id } })
       return res.json(req.body)
     } catch (error) {
