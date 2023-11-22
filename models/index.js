@@ -10,19 +10,17 @@ const User = sequelize.define('user', {
 
 const Ticket = sequelize.define('ticket', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  created: { type: DataTypes.BIGINT },
-  creator: { type: DataTypes.STRING(50) },
+  creator: { type: DataTypes.STRING(28) },
+  createdAt: { type: DataTypes.BIGINT, field: 'created' },
+  updater: { type: DataTypes.STRING(28) },
+  updatedAt: { type: DataTypes.BIGINT, field: 'updated' },
+  projectid: { type: DataTypes.STRING },
   description: { type: DataTypes.STRING(2000) },
   issue: { type: DataTypes.STRING(2000) },
-  problem: { type: DataTypes.STRING(20) },
-  projectid: { type: DataTypes.STRING },
-  severity: { type: DataTypes.STRING(20) },
+  problem: { type: DataTypes.STRING(4) },
+  severity: { type: DataTypes.STRING(4) },
   solution: { type: DataTypes.STRING(2000) },
-  status: { type: DataTypes.STRING(20) },
-  touched: { type: DataTypes.BIGINT },
-  toucher: { type: DataTypes.STRING(50) },
-  createdAt: { type: DataTypes.DATE },
-  updatedAt: { type: DataTypes.DATE }
+  status: { type: DataTypes.STRING(20) }
 })
 
 const Project = sequelize.define('project', {
@@ -33,12 +31,6 @@ const Project = sequelize.define('project', {
   createdAt: { type: DataTypes.DATE },
   updatedAt: { type: DataTypes.DATE }
 })
-
-Project.hasOne(Ticket)
-Ticket.belongsTo(Project)
-
-User.hasMany(Ticket)
-Ticket.belongsTo(User)
 
 module.exports = {
   User,
