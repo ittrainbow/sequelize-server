@@ -46,6 +46,17 @@ class DataController {
     }
   }
 
+  async deleteTicket(req, res, next) {
+    try {
+      const ticket = req.body
+      const { id } = ticket
+      await Ticket.destroy({ where: { id } })
+      return res.json(req.body)
+    } catch (error) {
+      next(ErrorApi.badRequest(error.message))
+    }
+  }
+
   async getAllTickets(req, res, next) {
     try {
       const { id } = req.params
