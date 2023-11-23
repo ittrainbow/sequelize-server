@@ -18,19 +18,21 @@ class UserController {
     const user = await User.create({ email, password: hashPassword, name })
     const token = createToken(user)
 
-    return res.json({ token })
+    return res.json({ token, user })
   }
 
   async login(req, res) {
     const { email, password } = req.body
+    console.log(100, email, password)
     const user = await User.findOne({ where: { email } })
     if (!user) return res.json({ errorMessage: 'User do not exists' })
 
     let pwdCheck = bcrypt.compareSync(password, user.password)
+    console.log(101, pwdCheck)
     if (!pwdCheck) return res.json('Wrong password')
 
     const token = createToken(user)
-    return res.json({ token })
+    return res.json({ user, token })
   }
 
   async getUsers(_, res) {
@@ -48,11 +50,20 @@ class UserController {
 
     if (!headerToken) return res.json({ errorMessage: 'User not authorized' })
 
+    const findUser = async (id) => {
+      await User.findOne({ where: { id } })
+        .then((response) => response.dataValues)
+        .then((user) => {
+          delete user.password
+          const token = createToken(user)
+          return res.json({ user, token })
+        })
+    }
+
     jsonwebtoken.verify(headerToken, process.env.SECRET_KEY, (error, user) => {
       if (error) return res.json({ errorMessage: 'Token not valid' })
       if (!user.id) return res.json({ errorMessage: 'No user ID' })
-      const token = createToken(user)
-      return res.json({ token })
+      findUser(user.id)
     })
   }
 }
