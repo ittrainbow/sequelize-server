@@ -20,8 +20,8 @@ const start = async () => {
 
 start()
 
-const models = require('./models')
-const router = require('./routes/index')
+// const models = require('./models')
+const router = require('./routes')
 app.use(cors())
 app.use(express.json())
 app.get('/', (_, res) => res.status(200).json({ message: 'app is up!' }))

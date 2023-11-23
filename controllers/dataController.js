@@ -1,5 +1,4 @@
 const { Project, Ticket } = require('../models')
-// const ErrorApi = require('../error')
 
 class DataController {
   async createProject(req, res) {
