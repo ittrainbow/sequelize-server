@@ -10,4 +10,6 @@ router.get('/auth', userController.auth)
 
 router.get('/getusers', userController.getUsers)
 
+router.post('/update', userController.updateUser)
+
 module.exports = router

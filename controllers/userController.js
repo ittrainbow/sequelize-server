@@ -23,25 +23,14 @@ class UserController {
 
   async login(req, res) {
     const { email, password } = req.body
-    console.log(100, email, password)
     const user = await User.findOne({ where: { email } })
     if (!user) return res.json({ errorMessage: 'User do not exists' })
 
     let pwdCheck = bcrypt.compareSync(password, user.password)
-    console.log(101, pwdCheck)
     if (!pwdCheck) return res.json('Wrong password')
 
     const token = createToken(user)
     return res.json({ user, token })
-  }
-
-  async getUsers(_, res) {
-    try {
-      const users = await User.findAll()
-      return res.json(users)
-    } catch (error) {
-      return res.json({ errorMessage: error.message })
-    }
   }
 
   async auth(req, res) {
@@ -65,6 +54,25 @@ class UserController {
       if (!user.id) return res.json({ errorMessage: 'No user ID' })
       findUser(user.id)
     })
+  }
+
+  async getUsers(_, res) {
+    try {
+      const users = await User.findAll()
+      return res.json(users)
+    } catch (error) {
+      return res.json({ errorMessage: error.message })
+    }
+  }
+
+  async updateUser(req, res) {
+    try {
+      const { name, id } = req.body
+      await User.update({ name }, { where: { id } })
+      return res.json('ok')
+    } catch (error) {
+      return res.json({ errorMessage: error.message })
+    }
   }
 }
 
