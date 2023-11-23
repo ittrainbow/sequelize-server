@@ -13,9 +13,7 @@ class DataController {
       const projects = await Project.findAll()
       return res.json(projects)
     } catch (error) {
-      // next(ErrorApi.badRequest(error.message))
-      const { message } = error
-      next(res.status(500).json({ errorMessage: message }))
+      return res.json({ errorMessage: error.message })
     }
   }
 
@@ -32,9 +30,7 @@ class DataController {
       const ticket = await Ticket.create({ ...ticketData, ...ticketUser })
       return res.json(ticket)
     } catch (error) {
-      // next(ErrorApi.badRequest(error.message))
-      const { message } = error
-      next(res.status(500).json({ errorMessage: message }))
+      return res.json({ errorMessage: error.message })
     }
   }
 
@@ -46,9 +42,7 @@ class DataController {
       await Ticket.update(ticket, { where: { id } })
       return res.json(ticket)
     } catch (error) {
-      // next(ErrorApi.badRequest(error.message))
-      const { message } = error
-      next(res.status(500).json({ errorMessage: message }))
+      return res.json({ errorMessage: error.message })
     }
   }
 
@@ -58,9 +52,7 @@ class DataController {
       await Ticket.destroy({ where: { id } })
       return res.json(id)
     } catch (error) {
-      // next(ErrorApi.badRequest(error.message))
-      const { message } = error
-      next(res.status(500).json({ errorMessage: message }))
+      return res.json({ errorMessage: error.message })
     }
   }
 
@@ -72,9 +64,7 @@ class DataController {
       })
       return res.json(tickets)
     } catch (error) {
-      // next(ErrorApi.badRequest(error.message))
-      const { message } = error
-      next(res.status(500).json({ errorMessage: message }))
+      return res.json({ errorMessage: error.message })
     }
   }
 
@@ -86,9 +76,7 @@ class DataController {
         .sort((a, b) => (b.id > a.id ? 1 : b.id < a.id ? -1 : 0))[0].id
       return res.json(lastId)
     } catch (error) {
-      // next(ErrorApi.badRequest(error.message))
-      const { message } = error
-      next(res.status(500).json({ errorMessage: message }))
+      return res.json({ errorMessage: message })
     }
   }
 }
