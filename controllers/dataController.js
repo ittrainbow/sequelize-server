@@ -1,5 +1,5 @@
 const { Project, Ticket } = require('../models')
-const ErrorApi = require('../error')
+// const ErrorApi = require('../error')
 
 class DataController {
   async createProject(req, res) {
@@ -13,7 +13,9 @@ class DataController {
       const projects = await Project.findAll()
       return res.json(projects)
     } catch (error) {
-      next(ErrorApi.badRequest(error.message))
+      // next(ErrorApi.badRequest(error.message))
+      const { message } = error
+      next(res.status(500).json({ errorMessage: message }))
     }
   }
 
@@ -30,7 +32,9 @@ class DataController {
       const ticket = await Ticket.create({ ...ticketData, ...ticketUser })
       return res.json(ticket)
     } catch (error) {
-      next(ErrorApi.badRequest(error.message))
+      // next(ErrorApi.badRequest(error.message))
+      const { message } = error
+      next(res.status(500).json({ errorMessage: message }))
     }
   }
 
@@ -40,9 +44,11 @@ class DataController {
       const { id } = ticket
 
       await Ticket.update(ticket, { where: { id } })
-      return res.json('success')
+      return res.json(ticket)
     } catch (error) {
-      next(ErrorApi.badRequest(error.message))
+      // next(ErrorApi.badRequest(error.message))
+      const { message } = error
+      next(res.status(500).json({ errorMessage: message }))
     }
   }
 
@@ -50,9 +56,11 @@ class DataController {
     try {
       const id = Number(req.body.id)
       await Ticket.destroy({ where: { id } })
-      return res.json(req.body)
+      return res.json(id)
     } catch (error) {
-      next(ErrorApi.badRequest(error.message))
+      // next(ErrorApi.badRequest(error.message))
+      const { message } = error
+      next(res.status(500).json({ errorMessage: message }))
     }
   }
 
@@ -64,7 +72,9 @@ class DataController {
       })
       return res.json(tickets)
     } catch (error) {
-      next(ErrorApi.badRequest(error.message))
+      // next(ErrorApi.badRequest(error.message))
+      const { message } = error
+      next(res.status(500).json({ errorMessage: message }))
     }
   }
 
@@ -76,7 +86,9 @@ class DataController {
         .sort((a, b) => (b.id > a.id ? 1 : b.id < a.id ? -1 : 0))[0].id
       return res.json(lastId)
     } catch (error) {
-      next(ErrorApi.badRequest(error.message))
+      // next(ErrorApi.badRequest(error.message))
+      const { message } = error
+      next(res.status(500).json({ errorMessage: message }))
     }
   }
 }

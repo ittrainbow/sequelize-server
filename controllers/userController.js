@@ -1,45 +1,63 @@
-const ErrorApi = require('../error')
+// const ErrorApi = require('../error')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { User } = require('../models')
-const { query } = require('../db')
+// const { query } = require('../db')
 
-const generateJwt = (id, email, role) => {
-  return jwt.sign({ id, email, role }, process.env.SECRET_KEY, { expiresIn: '24h' })
+const createToken = ({ id, email, admin = false }) => {
+  return jwt.sign({ id, email, admin }, process.env.SECRET_KEY, { expiresIn: '24h' })
 }
 
 class UserController {
-  async registration(req, res, next) {
-    const { email, password, role } = req.body
-    if (!email || !password) return next(ErrorApi.badRequest('Некорректный email или password'))
+  async signup(req, res, next) {
+    const { email, password, name } = req.body
 
-    const candidate = await User.findOne({ where: { email } })
-    if (candidate) return next(ErrorApi.badRequest('Пользователь с таким email уже существует'))
+    // if (!email || !password || !name) return next(ErrorApi.internal('Введите все необходимые данные'))
+    if (!email || !password || !name) return res.status(406).json({ errorMessage: 'Not enough data' })
+
+    const gotUser = await User.findOne({ where: { email } })
+    // if (gotUser) return next(ErrorApi.internal('Email already in use'))
+    if (gotUser) return res.status(401).json({ errorMessage: 'email already in use' })
 
     const hashPassword = await bcrypt.hash(password, 5)
-    const user = await User.create({ email, role, password: hashPassword })
-    const token = generateJwt(user.id, user.email, user.role)
+    const user = await User.create({ email, password: hashPassword, name })
+    const token = createToken(user)
+
     return res.json({ token })
   }
 
   async login(req, res, next) {
     const { email, password } = req.body
     const user = await User.findOne({ where: { email } })
-    if (!user) return next(ErrorApi.internal('Пользователь не найден'))
+    // if (!user) return next(ErrorApi.internal('User do not exists'))
+    if (!user) return res.status(401).json({ errorMessage: 'User do not exists' })
 
-    let comparePassword = bcrypt.compareSync(password, user.password)
-    if (!comparePassword) return next(ErrorApi.internal('Указан неверный пароль'))
+    let pwdCheck = bcrypt.compareSync(password, user.password)
+    if (!pwdCheck) return res.status(401).json('Wrong password')
 
-    const token = generateJwt(user.id, user.email, user.role)
+    const token = createToken(user)
     return res.json({ token })
   }
 
-  async check(req, res, next) {
-    // const { id, email, role } = req.user
-    // const token = generateJwt(id, email, role)
-    const { id } = req.query
-    if (!id) return next(ErrorApi.badRequest('No user ID'))
-    return res.json(id)
+  async getUsers(_, res, next) {
+    try {
+      const users = await User.findAll()
+      return res.json(users)
+    } catch (error) {
+      const { message } = error
+      next(res.json({ errorMessage: message }))
+    }
+  }
+
+  async auth(req, res, next) {
+    // console.log(203, req.body)
+    // const { user } = req.body
+    // const { id } = req.query
+    // console.log(120, id)
+    // const token = createToken(user)
+    // if (!id) return next(ErrorApi.badRequest('No user ID'))
+    // if (!id) return next(res.json({ errorMessage: 'No user ID' }))
+    return res.json({ message: 'OK' })
   }
 }
 
