@@ -1,14 +1,16 @@
+import { Request, Response, NextFunction } from 'express'
+const jsonwebtoken = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+
 import { AppError, UserType } from '../types'
 import { User } from '../models'
-const bcrypt = require('bcrypt')
-const jsonwebtoken = require('jsonwebtoken')
 
 const createToken = ({ id, email, admin = false }: Pick<UserType, 'id' | 'email' | 'admin'>) => {
   return jsonwebtoken.sign({ id, email, admin }, process.env.SECRET_KEY, { expiresIn: '24h' })
 }
 
-class UserController {
-  async signup(req: any, res: any, next: any) {
+class UsersController {
+  async signup(req: Request, res: Response, next: NextFunction) {
     const { email, password, name } = req.body
     if (!email || !password || !name) return next(res.status(400).json('Not enough data'))
 
@@ -22,8 +24,7 @@ class UserController {
     return res.json({ user, token })
   }
 
-  // working
-  async login(req: any, res: any, next: any) {
+  async login(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body
 
     const user = await User.findOne({ where: { email } })
@@ -36,8 +37,7 @@ class UserController {
     return res.json({ user, token })
   }
 
-  // working
-  async auth(req: any, res: any, next: any) {
+  async auth(req: Request, res: Response, next: NextFunction) {
     const { authorization } = req.headers
     const headerToken = authorization && authorization.split(' ')[1]
 
@@ -51,6 +51,7 @@ class UserController {
           const token = createToken(user)
           return res.json({ user, token })
         })
+        .catch(() => next(res.status(401).json('User not authorized (token probably expired)')))
     }
 
     jsonwebtoken.verify(headerToken, process.env.SECRET_KEY, (error: AppError, user: UserType) => {
@@ -65,8 +66,7 @@ class UserController {
     })
   }
 
-  // working
-  async getUsers(req: any, res: any, next: any) {
+  async getAll(_: Request, res: Response, next: NextFunction) {
     try {
       const users = await User.findAll()
       return res.json(users)
@@ -76,8 +76,7 @@ class UserController {
     }
   }
 
-  // working
-  async updateUser(req: any, res: any, next: any) {
+  async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { name, id } = req.body
       await User.update({ name }, { where: { id } })
@@ -89,4 +88,4 @@ class UserController {
   }
 }
 
-module.exports = new UserController()
+module.exports = new UsersController()

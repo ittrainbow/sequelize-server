@@ -1,10 +1,13 @@
-import express, { Router } from 'express'
-const userRouter = require('./userRouter')
-const dataRouter = require('./dataRouter')
+import express from 'express'
+
+const usersRouter = require('./usersRouter')
+const ticketsRouter = require('./ticketsRouter')
+const projectsRouter = require('./projectsRouter')
 
 const router = express.Router()
 
-router.use('/user', userRouter)
-router.use('/projects', dataRouter)
+router.use('/users', usersRouter)
+router.use('/tickets', ticketsRouter)
+router.use('/projects', projectsRouter)
 
 module.exports = router

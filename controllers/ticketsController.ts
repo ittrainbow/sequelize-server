@@ -1,33 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
 import { AppError } from '../types'
 
-const { Project, Ticket } = require('../models')
+const { Ticket } = require('../models')
 
-class DataController {
-  async createProject(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { name, description, projectid } = req.body
-      const project = await Project.create({ name, description, projectid })
-      return res.json(project)
-    } catch (error) {
-      const { status = 500, message } = error as AppError
-      return next(res.status(status).json(message))
-    }
-  }
-
-  // working
-  async getAllProjects(_: Request, res: Response, next: NextFunction) {
-    try {
-      const projects = await Project.findAll()
-      return res.json(projects)
-    } catch (error) {
-      const { status = 500, message } = error as AppError
-      return next(res.status(status).json(message))
-    }
-  }
-
-  // working
-  async createTicket(req: Request, res: Response, next: NextFunction) {
+class TicketsController {
+  async create(req: Request, res: Response, next: NextFunction) {
     try {
       let { creator, description, issue, problem, projectid, severity, solution, status } = req.body
       const ticketData = { description, issue, problem, projectid, severity, solution, status }
@@ -45,8 +22,7 @@ class DataController {
     }
   }
 
-  // working
-  async updateTicket(req: Request, res: Response, next: NextFunction) {
+  async update(req: Request, res: Response, next: NextFunction) {
     try {
       const ticket = req.body
       const { id } = ticket
@@ -58,8 +34,7 @@ class DataController {
     }
   }
 
-  // working
-  async deleteTicket(req: Request, res: Response, next: NextFunction) {
+  async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const id = Number(req.body.id)
       await Ticket.destroy({ where: { id } })
@@ -70,8 +45,7 @@ class DataController {
     }
   }
 
-  // working
-  async getAllTickets(req: Request, res: Response, next: NextFunction) {
+  async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params
       const tickets = await Ticket.findAll({
@@ -85,4 +59,4 @@ class DataController {
   }
 }
 
-module.exports = new DataController()
+module.exports = new TicketsController()
