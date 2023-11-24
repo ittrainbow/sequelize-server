@@ -30,7 +30,7 @@ const start = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 start();
-// const models = require('./models')
+const models = require('./models');
 const router = require('./routes');
 app.use(cors());
 app.use(express_1.default.json());

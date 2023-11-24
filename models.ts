@@ -1,7 +1,7 @@
 const sequelize = require('./db')
 const { DataTypes } = require('sequelize')
 
-const User = sequelize.define('user', {
+export const User = sequelize.define('user', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   email: { type: DataTypes.STRING, unique: true },
   password: { type: DataTypes.STRING },
@@ -11,7 +11,7 @@ const User = sequelize.define('user', {
   updatedAt: { type: DataTypes.BIGINT, field: 'updated', defaultValue: new Date().getTime() }
 })
 
-const Ticket = sequelize.define('ticket', {
+export const Ticket = sequelize.define('ticket', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   creator: { type: DataTypes.STRING },
   createdAt: { type: DataTypes.BIGINT, field: 'created' },
@@ -26,7 +26,7 @@ const Ticket = sequelize.define('ticket', {
   status: { type: DataTypes.STRING }
 })
 
-const Project = sequelize.define('project', {
+export const Project = sequelize.define('project', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   description: { type: DataTypes.STRING },
   name: { type: DataTypes.STRING },
