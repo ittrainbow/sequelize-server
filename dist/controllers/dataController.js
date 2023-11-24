@@ -18,6 +18,7 @@ class DataController {
             return res.json(project);
         });
     }
+    // working
     getAllProjects(_, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -25,7 +26,7 @@ class DataController {
                 return res.json(projects);
             }
             catch (error) {
-                const { status, message } = error;
+                const { status = 500, message } = error;
                 return next(res.status(status).json(message));
             }
         });
@@ -45,7 +46,7 @@ class DataController {
                 return res.json(ticket);
             }
             catch (error) {
-                const { status, message } = error;
+                const { status = 500, message } = error;
                 return next(res.status(status).json(message));
             }
         });
@@ -53,13 +54,21 @@ class DataController {
     updateTicket(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const ticket = req.body;
-                const { id } = ticket;
+                const { id } = req.body;
+                const createdAt = req.body.created.toString();
+                const updatedAt = req.body.updated.toString();
+                console.log(20, createdAt, updatedAt);
+                // console.log(19, ticket)
+                // console.log(20, findTicket.dataValues)
+                const ticket = Object.assign(Object.assign({}, req.body), { createdAt, updatedAt });
+                delete ticket.created;
+                delete ticket.updated;
+                console.log(21, ticket);
                 yield Ticket.update(ticket, { where: { id } });
                 return res.json(ticket);
             }
             catch (error) {
-                const { status, message } = error;
+                const { status = 500, message } = error;
                 return next(res.status(status).json(message));
             }
         });
@@ -72,11 +81,12 @@ class DataController {
                 return res.json(id);
             }
             catch (error) {
-                const { status, message } = error;
+                const { status = 500, message } = error;
                 return next(res.status(status).json(message));
             }
         });
     }
+    // working
     getAllTickets(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -87,7 +97,7 @@ class DataController {
                 return res.json(tickets);
             }
             catch (error) {
-                const { status, message } = error;
+                const { status = 500, message } = error;
                 return next(res.status(status).json(message));
             }
         });
@@ -102,7 +112,7 @@ class DataController {
                 return res.json(lastId);
             }
             catch (error) {
-                const { status, message } = error;
+                const { status = 500, message } = error;
                 return next(res.status(status).json(message));
             }
         });

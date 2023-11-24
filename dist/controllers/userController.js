@@ -20,7 +20,7 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password, name } = req.body;
             if (!email || !password || !name)
-                return next(res.status(403).json('Not enough data'));
+                return next(res.status(400).json('Not enough data'));
             const gotUser = yield models_1.User.findOne({ where: { email } });
             if (gotUser)
                 return next(res.status(403).json('Email already in use'));
@@ -35,7 +35,7 @@ class UserController {
             const { email, password } = req.body;
             const user = yield models_1.User.findOne({ where: { email } });
             if (!user)
-                return next(res.status(403).json('User does not exists'));
+                return next(res.status(400).json('User does not exists'));
             let pwdCheck = bcrypt.compareSync(password, user.password);
             if (!pwdCheck)
                 return next(res.status(403).json('Wrong password'));
@@ -43,12 +43,13 @@ class UserController {
             return res.json({ user, token });
         });
     }
+    // working
     auth(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const { authorization } = req.headers;
             const headerToken = authorization && authorization.split(' ')[1];
             if (!headerToken)
-                return next(res.status(403).json('User not authorized (token probably expired)'));
+                return next(res.status(401).json('User not authorized (token probably expired)'));
             const findUser = (id) => __awaiter(this, void 0, void 0, function* () {
                 yield models_1.User.findOne({ where: { id } })
                     .then((response) => response.dataValues)
@@ -60,15 +61,16 @@ class UserController {
             });
             jsonwebtoken.verify(headerToken, process.env.SECRET_KEY, (error, user) => {
                 if (error) {
-                    const { status, message } = error;
+                    const { status = 401, message } = error;
                     return next(res.status(status).json(message));
                 }
                 if (!user.id)
-                    return next(res.status(403).json('No user ID'));
+                    return next(res.status(400).json('No user ID'));
                 findUser(user.id);
             });
         });
     }
+    // working
     getUsers(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -76,7 +78,7 @@ class UserController {
                 return res.json(users);
             }
             catch (error) {
-                const { status, message } = error;
+                const { status = 500, message } = error;
                 return next(res.status(status).json(message));
             }
         });
@@ -89,7 +91,7 @@ class UserController {
                 return res.json('User updated');
             }
             catch (error) {
-                const { status, message } = error;
+                const { status = 403, message } = error;
                 return next(res.status(status).json(message));
             }
         });

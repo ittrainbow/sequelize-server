@@ -1,4 +1,3 @@
-import { Request, Response, NextFunction } from 'express'
 import { AppError, UserType } from '../types'
 import { User } from '../models'
 const bcrypt = require('bcrypt')
@@ -9,9 +8,9 @@ const createToken = ({ id, email, admin = false }: Pick<UserType, 'id' | 'email'
 }
 
 class UserController {
-  async signup(req: Request, res: Response, next: NextFunction) {
+  async signup(req: any, res: any, next: any) {
     const { email, password, name } = req.body
-    if (!email || !password || !name) return next(res.status(403).json('Not enough data'))
+    if (!email || !password || !name) return next(res.status(400).json('Not enough data'))
 
     const gotUser = await User.findOne({ where: { email } })
     if (gotUser) return next(res.status(403).json('Email already in use'))
@@ -23,11 +22,11 @@ class UserController {
     return res.json({ user, token })
   }
 
-  async login(req: Request, res: Response, next: NextFunction) {
+  async login(req: any, res: any, next: any) {
     const { email, password } = req.body
 
     const user = await User.findOne({ where: { email } })
-    if (!user) return next(res.status(403).json('User does not exists'))
+    if (!user) return next(res.status(400).json('User does not exists'))
 
     let pwdCheck = bcrypt.compareSync(password, user.password)
     if (!pwdCheck) return next(res.status(403).json('Wrong password'))
@@ -36,11 +35,12 @@ class UserController {
     return res.json({ user, token })
   }
 
-  async auth(req: Request, res: Response, next: NextFunction) {
+  // working
+  async auth(req: any, res: any, next: any) {
     const { authorization } = req.headers
     const headerToken = authorization && authorization.split(' ')[1]
 
-    if (!headerToken) return next(res.status(403).json('User not authorized (token probably expired)'))
+    if (!headerToken) return next(res.status(401).json('User not authorized (token probably expired)'))
 
     const findUser = async (id: number) => {
       await User.findOne({ where: { id } })
@@ -54,33 +54,34 @@ class UserController {
 
     jsonwebtoken.verify(headerToken, process.env.SECRET_KEY, (error: AppError, user: UserType) => {
       if (error) {
-        const { status, message } = error
+        const { status = 401, message } = error
         return next(res.status(status).json(message))
       }
 
-      if (!user.id) return next(res.status(403).json('No user ID'))
+      if (!user.id) return next(res.status(400).json('No user ID'))
 
       findUser(user.id)
     })
   }
 
-  async getUsers(req: Request, res: Response, next: NextFunction) {
+  // working
+  async getUsers(req: any, res: any, next: any) {
     try {
       const users = await User.findAll()
       return res.json(users)
     } catch (error) {
-      const { status, message } = error as AppError
+      const { status = 500, message } = error as AppError
       return next(res.status(status).json(message))
     }
   }
 
-  async updateUser(req: Request, res: Response, next: NextFunction) {
+  async updateUser(req: any, res: any, next: any) {
     try {
       const { name, id } = req.body
       await User.update({ name }, { where: { id } })
       return res.json('User updated')
     } catch (error) {
-      const { status, message } = error as AppError
+      const { status = 403, message } = error as AppError
       return next(res.status(status).json(message))
     }
   }
