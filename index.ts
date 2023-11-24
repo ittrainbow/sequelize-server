@@ -1,4 +1,5 @@
-const express = require('express')
+import express, { Request, Response } from 'express'
+
 const app = express()
 const cors = require('cors')
 
@@ -14,7 +15,7 @@ const start = async () => {
     await sequelize.sync()
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
   } catch (error) {
-    console.error(error.message)
+    if (error instanceof Error) console.error(error.message)
   }
 }
 
@@ -24,5 +25,5 @@ start()
 const router = require('./routes')
 app.use(cors())
 app.use(express.json())
-app.get('/', (_, res) => res.status(200).json({ message: 'app is up!' }))
+app.get('/', (req: Request, res: Response) => res.status(200).json({ message: 'app is up!' }))
 app.use('/api', router)

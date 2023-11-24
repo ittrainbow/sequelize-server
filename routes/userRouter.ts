@@ -1,5 +1,5 @@
-const Router = require('express')
-const router = new Router()
+import express, { Router } from 'express'
+const router: Router = express.Router()
 const userController = require('../controllers/userController')
 
 router.post('/signup', userController.signup)

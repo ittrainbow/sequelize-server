@@ -1,5 +1,8 @@
+import { Request, Response, NextFunction } from 'express'
+import { AppError } from '../types'
 const bcrypt = require('bcrypt')
 const jsonwebtoken = require('jsonwebtoken')
+
 const { User } = require('../models')
 
 const createToken = ({ id, email, admin = false }) => {
@@ -67,7 +70,7 @@ class UserController {
       const users = await User.findAll()
       return res.json(users)
     } catch (error) {
-      const { status, message } = error
+      const { status, message } = error as AppError
       return next(res.status(status).json(message))
     }
   }
@@ -78,7 +81,7 @@ class UserController {
       await User.update({ name }, { where: { id } })
       return res.json('User updated')
     } catch (error) {
-      const { status, message } = error
+      const { status, message } = error as AppError
       return next(res.status(status).json(message))
     }
   }

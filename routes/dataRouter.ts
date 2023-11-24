@@ -1,6 +1,7 @@
-const Router = require('express')
-const router = new Router()
+import express, { Router } from 'express'
 const DataController = require('../controllers/dataController')
+
+const router: Router = express.Router()
 
 router.get('/', DataController.getAllProjects)
 
