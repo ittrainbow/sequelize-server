@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const { Project, Ticket } = require('../models');
 class DataController {
-    createProject(req, res, _) {
+    createProject(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const { name, description } = req.body;
             const project = yield Project.create({ name, description });
@@ -19,7 +19,7 @@ class DataController {
         });
     }
     // working
-    getAllProjects(_, res, next) {
+    getAllProjects(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const projects = yield Project.findAll();
@@ -38,9 +38,9 @@ class DataController {
                 const ticketData = { description, issue, problem, projectid, severity, solution, status };
                 const ticketUser = {
                     created: new Date().getTime(),
-                    touched: new Date().getTime(),
+                    updated: new Date().getTime(),
                     creator,
-                    toucher: creator
+                    updater: creator
                 };
                 const ticket = yield Ticket.create(Object.assign(Object.assign({}, ticketData), ticketUser));
                 return res.json(ticket);
@@ -51,19 +51,12 @@ class DataController {
             }
         });
     }
+    // working
     updateTicket(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { id } = req.body;
-                const createdAt = req.body.created.toString();
-                const updatedAt = req.body.updated.toString();
-                console.log(20, createdAt, updatedAt);
-                // console.log(19, ticket)
-                // console.log(20, findTicket.dataValues)
-                const ticket = Object.assign(Object.assign({}, req.body), { createdAt, updatedAt });
-                delete ticket.created;
-                delete ticket.updated;
-                console.log(21, ticket);
+                const ticket = req.body;
+                const { id } = ticket;
                 yield Ticket.update(ticket, { where: { id } });
                 return res.json(ticket);
             }
@@ -102,7 +95,7 @@ class DataController {
             }
         });
     }
-    getLastTicket(_, res, next) {
+    getLastTicket(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const tickets = yield Ticket.findAll();

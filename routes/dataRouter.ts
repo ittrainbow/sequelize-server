@@ -9,8 +9,6 @@ router.post('/createproject', DataController.createProject)
 
 router.get('/:id', DataController.getAllTickets)
 
-router.get('/tickets/getlast', DataController.getLastTicket)
-
 router.put('/updateticket', DataController.updateTicket)
 
 router.post('/createticket', DataController.createTicket)

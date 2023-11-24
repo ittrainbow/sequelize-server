@@ -22,6 +22,7 @@ class UserController {
     return res.json({ user, token })
   }
 
+  // working
   async login(req: any, res: any, next: any) {
     const { email, password } = req.body
 
@@ -75,6 +76,7 @@ class UserController {
     }
   }
 
+  // working
   async updateUser(req: any, res: any, next: any) {
     try {
       const { name, id } = req.body

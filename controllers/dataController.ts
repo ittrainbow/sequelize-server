@@ -1,16 +1,22 @@
+import { Request, Response, NextFunction } from 'express'
 import { AppError } from '../types'
 
 const { Project, Ticket } = require('../models')
 
 class DataController {
-  async createProject(req: any, res: any, _: any) {
-    const { name, description } = req.body
-    const project = await Project.create({ name, description })
-    return res.json(project)
+  async createProject(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { name, description, projectid } = req.body
+      const project = await Project.create({ name, description, projectid })
+      return res.json(project)
+    } catch (error) {
+      const { status = 500, message } = error as AppError
+      return next(res.status(status).json(message))
+    }
   }
 
   // working
-  async getAllProjects(_: any, res: any, next: any) {
+  async getAllProjects(_: Request, res: Response, next: NextFunction) {
     try {
       const projects = await Project.findAll()
       return res.json(projects)
@@ -20,15 +26,16 @@ class DataController {
     }
   }
 
-  async createTicket(req: any, res: any, next: any) {
+  // working
+  async createTicket(req: Request, res: Response, next: NextFunction) {
     try {
       let { creator, description, issue, problem, projectid, severity, solution, status } = req.body
       const ticketData = { description, issue, problem, projectid, severity, solution, status }
       const ticketUser = {
         created: new Date().getTime(),
-        touched: new Date().getTime(),
+        updated: new Date().getTime(),
         creator,
-        toucher: creator
+        updater: creator
       }
       const ticket = await Ticket.create({ ...ticketData, ...ticketUser })
       return res.json(ticket)
@@ -38,21 +45,11 @@ class DataController {
     }
   }
 
-  async updateTicket(req: any, res: any, next: any) {
+  // working
+  async updateTicket(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.body
-      const createdAt = req.body.created.toString()
-      const updatedAt = req.body.updated.toString()
-      console.log(20, createdAt, updatedAt)
-      // console.log(19, ticket)
-      // console.log(20, findTicket.dataValues)
-
-      const ticket = { ...req.body, createdAt, updatedAt }
-      delete ticket.created
-      delete ticket.updated
-
-      console.log(21, ticket)
-
+      const ticket = req.body
+      const { id } = ticket
       await Ticket.update(ticket, { where: { id } })
       return res.json(ticket)
     } catch (error) {
@@ -61,7 +58,8 @@ class DataController {
     }
   }
 
-  async deleteTicket(req: any, res: any, next: any) {
+  // working
+  async deleteTicket(req: Request, res: Response, next: NextFunction) {
     try {
       const id = Number(req.body.id)
       await Ticket.destroy({ where: { id } })
@@ -73,26 +71,13 @@ class DataController {
   }
 
   // working
-  async getAllTickets(req: any, res: any, next: any) {
+  async getAllTickets(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params
       const tickets = await Ticket.findAll({
         where: { projectid: id }
       })
       return res.json(tickets)
-    } catch (error) {
-      const { status = 500, message } = error as AppError
-      return next(res.status(status).json(message))
-    }
-  }
-
-  async getLastTicket(_: any, res: any, next: any) {
-    try {
-      const tickets = await Ticket.findAll()
-      const lastId = Object.keys(tickets)
-        .map((el) => tickets[el])
-        .sort((a, b) => (b.id > a.id ? 1 : b.id < a.id ? -1 : 0))[0].id
-      return res.json(lastId)
     } catch (error) {
       const { status = 500, message } = error as AppError
       return next(res.status(status).json(message))

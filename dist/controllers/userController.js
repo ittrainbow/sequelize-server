@@ -30,6 +30,7 @@ class UserController {
             return res.json({ user, token });
         });
     }
+    // working
     login(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password } = req.body;
@@ -83,6 +84,7 @@ class UserController {
             }
         });
     }
+    // working
     updateUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
