@@ -7,12 +7,13 @@ class DataController {
     return res.json(project)
   }
 
-  async getAllProjects(_, res) {
+  async getAllProjects(_, res, next) {
     try {
       const projects = await Project.findAll()
       return res.json(projects)
     } catch (error) {
-      return res.json({ errorMessage: error.message })
+      const { status, message } = error
+      return next(res.status(status).json(message))
     }
   }
 
@@ -29,7 +30,8 @@ class DataController {
       const ticket = await Ticket.create({ ...ticketData, ...ticketUser })
       return res.json(ticket)
     } catch (error) {
-      return res.json({ errorMessage: error.message })
+      const { status, message } = error
+      return next(res.status(status).json(message))
     }
   }
 
@@ -41,7 +43,8 @@ class DataController {
       await Ticket.update(ticket, { where: { id } })
       return res.json(ticket)
     } catch (error) {
-      return res.json({ errorMessage: error.message })
+      const { status, message } = error
+      return next(res.status(status).json(message))
     }
   }
 
@@ -51,7 +54,8 @@ class DataController {
       await Ticket.destroy({ where: { id } })
       return res.json(id)
     } catch (error) {
-      return res.json({ errorMessage: error.message })
+      const { status, message } = error
+      return next(res.status(status).json(message))
     }
   }
 
@@ -63,7 +67,8 @@ class DataController {
       })
       return res.json(tickets)
     } catch (error) {
-      return res.json({ errorMessage: error.message })
+      const { status, message } = error
+      return next(res.status(status).json(message))
     }
   }
 
@@ -75,7 +80,8 @@ class DataController {
         .sort((a, b) => (b.id > a.id ? 1 : b.id < a.id ? -1 : 0))[0].id
       return res.json(lastId)
     } catch (error) {
-      return res.json({ errorMessage: message })
+      const { status, message } = error
+      return next(res.status(status).json(message))
     }
   }
 }
