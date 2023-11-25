@@ -7,7 +7,7 @@ class ProjectsController {
       return res.json(projects)
     } catch (error) {
       const { status = 500, message } = error
-      return next(res.status(status).json(message))
+      return next(res.status(status).json('projects.getAll', message))
     }
   }
 }
