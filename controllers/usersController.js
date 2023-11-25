@@ -36,6 +36,16 @@ class UsersController {
   }
 
   async auth(req, res, next) {
+    console.log(1000, req.method)
+    
+    if (req.method === 'OPTIONS') {
+      res.setHeader('Access-Control-Allow-Origin', '*')
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+
+      res.end()
+    }
+    
     const { token } = req.body
     if (!token) return next(res.status(401).json('user.auth: No token'))
 
