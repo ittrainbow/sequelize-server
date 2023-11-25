@@ -45,7 +45,7 @@ class UsersController {
         .then((response) => response.dataValues)
         .then((user) => {
           delete user.password
-          return res.json({ user, token: createToken(user) })
+          return res.status(200).json({ user, token: createToken(user) })
         })
         .catch(() => next(res.status(401).json('user.auth: User not authorized (token probably expired)')))
     }
