@@ -23,11 +23,11 @@ start()
 
 const models = require('./models')
 const router = require('./routes')
-app.use(function (req, res, next) {
+app.use(cors())
+app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-  res.setHeader('Access-Control-Allow-Credentials', true)
   next()
 })
 app.use(express.json())
