@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 const jsonwebtoken = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+
 const { User } = require('../models')
 
 import { AppError, UserType } from '../types'
