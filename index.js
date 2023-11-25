@@ -25,9 +25,9 @@ const start = async () => {
   }
 }
 
-const io = new Server(server, {
-  cors: { origin: '*', methods: ['GET', 'POST'], allowedHeaders: ['Access-Control-Allow-Origin'] }
-})
+// const io = new Server(server, {
+//   cors: { origin: '*', methods: ['GET', 'POST'], allowedHeaders: ['Access-Control-Allow-Origin'] }
+// })
 
 start()
 
