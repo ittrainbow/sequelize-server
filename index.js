@@ -23,12 +23,7 @@ start()
 
 const models = require('./models')
 const router = require('./routes')
-app.use(
-  cors({
-    credentials: true,
-    origin: 'http://localhost:3000'
-  })
-)
+app.use(cors())
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST')
