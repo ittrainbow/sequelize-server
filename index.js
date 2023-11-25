@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
 
 const app = express()
 const cors = require('cors')
@@ -25,5 +25,5 @@ const models = require('./models')
 const router = require('./routes')
 app.use(cors())
 app.use(express.json())
-app.get('/', (req: Request, res: Response) => res.status(200).json({ message: 'app is up!' }))
+app.get('/', (req, res) => res.status(200).json({ message: 'app is up!' }))
 app.use('/api', router)
