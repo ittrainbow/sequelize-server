@@ -25,11 +25,8 @@ const models = require('./models')
 const router = require('./routes')
 app.use(
   cors({
-    allowedHeaders: ['Content-Type', 'Authorization'], // headers that React is sending to the API
-    exposedHeaders: ['Content-Type', 'Authorization'], // headers that you are sending back to React
     origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false
+    optionsSuccessStatus: 200
   })
 )
 app.use(express.json())
