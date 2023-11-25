@@ -9,12 +9,6 @@ const { PORT } = process.env
 
 const sequelize = require('./db')
 
-app.all('/', function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'X-Requested-With')
-  next()
-})
-
 const start = async () => {
   try {
     await sequelize.authenticate()
@@ -25,15 +19,19 @@ const start = async () => {
   }
 }
 
-// const io = new Server(server, {
-//   cors: { origin: '*', methods: ['GET', 'POST'], allowedHeaders: ['Access-Control-Allow-Origin'] }
-// })
-
 start()
 
 const models = require('./models')
 const router = require('./routes')
-app.use(cors())
+app.use(
+  cors({
+    allowedHeaders: ['Content-Type'], // headers that React is sending to the API
+    exposedHeaders: ['Content-Type'], // headers that you are sending back to React
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false
+  })
+)
 app.use(express.json())
 app.get('/', (req, res) => res.status(200).json({ message: 'app is up!' }))
 app.use('/api', router)
