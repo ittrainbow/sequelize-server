@@ -22,6 +22,7 @@ const start = async () => {
 start()
 
 const models = require('./models')
+
 const router = require('./routes')
 app.use(cors())
 app.use(express.json())
