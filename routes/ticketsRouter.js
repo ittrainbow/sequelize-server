@@ -1,4 +1,4 @@
-import express from 'express'
+const express = require('express')
 
 const ticketsController = require('../controllers/ticketsController')
 
