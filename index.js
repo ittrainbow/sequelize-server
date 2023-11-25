@@ -23,12 +23,12 @@ start()
 
 const models = require('./models')
 const router = require('./routes')
-app.use(
-  cors({
-    origin: true,
-    optionsSuccessStatus: 200
-  })
-)
+app.use(cors())
+app.all('*', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
+  next()
+})
 app.use(express.json())
 app.get('/', (req, res) => res.status(200).json({ message: 'app is up!' }))
 app.use('/api', router)
