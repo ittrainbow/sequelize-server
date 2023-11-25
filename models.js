@@ -6,9 +6,9 @@ const User = sequelize.define('user', {
   email: { type: DataTypes.STRING, unique: true },
   password: { type: DataTypes.STRING },
   name: { type: DataTypes.STRING },
-  admin: { type: DataTypes.BOOLEAN, defaultValue: false }
-  // createdAt: { type: DataTypes.DATE, allowNull: true },
-  // updatedAt: { type: DataTypes.DATE, allowNull: true }
+  admin: { type: DataTypes.BOOLEAN, defaultValue: false },
+  createdAt: { type: DataTypes.DATE, allowNull: true },
+  updatedAt: { type: DataTypes.DATE, allowNull: true }
 })
 
 const Ticket = sequelize.define('ticket', {
@@ -23,18 +23,18 @@ const Ticket = sequelize.define('ticket', {
   problem: { type: DataTypes.STRING },
   severity: { type: DataTypes.STRING },
   solution: { type: DataTypes.STRING(2000) },
-  status: { type: DataTypes.STRING }
-  // createdAt: { type: DataTypes.DATE, allowNull: true },
-  // updatedAt: { type: DataTypes.DATE, allowNull: true }
+  status: { type: DataTypes.STRING },
+  createdAt: { type: DataTypes.DATE, allowNull: true },
+  updatedAt: { type: DataTypes.DATE, allowNull: true }
 })
 
 const Project = sequelize.define('project', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   description: { type: DataTypes.STRING },
   name: { type: DataTypes.STRING },
-  projectid: { type: DataTypes.STRING }
-  // createdAt: { type: DataTypes.DATE, allowNull: true },
-  // updatedAt: { type: DataTypes.DATE, allowNull: true }
+  projectid: { type: DataTypes.STRING },
+  createdAt: { type: DataTypes.DATE, allowNull: true },
+  updatedAt: { type: DataTypes.DATE, allowNull: true }
 })
 
 module.exports = {
