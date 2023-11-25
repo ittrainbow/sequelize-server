@@ -8,7 +8,7 @@ router.post('/signup', usersController.signup)
 
 router.post('/login', usersController.login)
 
-router.post('/auth', usersController.auth)
+router.get('/auth', usersController.auth)
 
 router.get('/getall', usersController.getAll)
 
