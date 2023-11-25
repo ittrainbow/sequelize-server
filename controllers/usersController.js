@@ -36,23 +36,20 @@ class UsersController {
   }
 
   async auth(req, res, next) {
-    const { authorization } = req.headers
-    const headerToken = authorization && authorization.split(' ')[1]
-
-    if (!headerToken) return next(res.status(401).json('user.auth: No token'))
+    const { token } = req.body
+    if (!token) return next(res.status(401).json('user.auth: No token'))
 
     const findUser = async (id) => {
       await User.findOne({ where: { id } })
         .then((response) => response.dataValues)
         .then((user) => {
           delete user.password
-          const token = createToken(user)
-          return res.json({ user, token })
+          return res.json({ user, token: createToken(user) })
         })
         .catch(() => next(res.status(401).json('user.auth: User not authorized (token probably expired)')))
     }
 
-    jsonwebtoken.verify(headerToken, process.env.SECRET_KEY, (error, user) => {
+    jsonwebtoken.verify(token, process.env.SECRET_KEY, (error, user) => {
       if (error) {
         const { status = 401, message } = error
         return next(res.status(status).json(`user.auth: ${message}`))
