@@ -21,9 +21,15 @@ const start = async () => {
 
 start()
 
+const corsOptions = {
+  origin: '*',
+  credentials: true,
+  optionSuccessStatus: 200
+}
+app.use(cors(corsOptions))
+
 const models = require('./models')
 const router = require('./routes')
-app.use(cors())
 app.use(express.json())
 app.get('/', (req, res) => res.status(200).json({ message: 'app is up!' }))
 app.use('/api', router)
