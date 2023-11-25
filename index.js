@@ -25,7 +25,7 @@ const models = require('./models')
 const router = require('./routes')
 app.use(
   cors({
-    origin: '*',
+    origin: true,
     optionsSuccessStatus: 200
   })
 )
