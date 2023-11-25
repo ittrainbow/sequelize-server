@@ -7,8 +7,8 @@ const User = sequelize.define('user', {
   password: { type: DataTypes.STRING },
   name: { type: DataTypes.STRING },
   admin: { type: DataTypes.BOOLEAN, defaultValue: false },
-  createdAt: { type: DataTypes.DATE, allowNull: true },
-  updatedAt: { type: DataTypes.DATE, allowNull: true }
+  createdAt: { type: DataTypes.DATE, allowNull: true, field: 'createdat' },
+  updatedAt: { type: DataTypes.DATE, allowNull: true, field: 'updatedat' }
 })
 
 const Ticket = sequelize.define('ticket', {
@@ -24,8 +24,8 @@ const Ticket = sequelize.define('ticket', {
   severity: { type: DataTypes.STRING },
   solution: { type: DataTypes.STRING(2000) },
   status: { type: DataTypes.STRING },
-  createdAt: { type: DataTypes.DATE, allowNull: true },
-  updatedAt: { type: DataTypes.DATE, allowNull: true }
+  createdAt: { type: DataTypes.DATE, allowNull: true, field: 'createdat' },
+  updatedAt: { type: DataTypes.DATE, allowNull: true, field: 'updatedat' }
 })
 
 const Project = sequelize.define('project', {
@@ -33,8 +33,8 @@ const Project = sequelize.define('project', {
   description: { type: DataTypes.STRING },
   name: { type: DataTypes.STRING },
   projectid: { type: DataTypes.STRING },
-  createdAt: { type: DataTypes.DATE, allowNull: true },
-  updatedAt: { type: DataTypes.DATE, allowNull: true }
+  createdAt: { type: DataTypes.DATE, allowNull: true, field: 'createdat' },
+  updatedAt: { type: DataTypes.DATE, allowNull: true, field: 'updatedat' }
 })
 
 module.exports = {
