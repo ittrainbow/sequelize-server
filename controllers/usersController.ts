@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
 const jsonwebtoken = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const { User } = require('../models')
 
 import { AppError, UserType } from '../types'
-import { User } from '../models'
 
 const createToken = ({ id, email, admin = false }: Pick<UserType, 'id' | 'email' | 'admin'>) => {
   return jsonwebtoken.sign({ id, email, admin }, process.env.SECRET_KEY, { expiresIn: '24h' })
