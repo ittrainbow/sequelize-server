@@ -1,4 +1,4 @@
-const express = require('express')
+import express from 'express'
 
 const usersRouter = require('./usersRouter')
 const ticketsRouter = require('./ticketsRouter')
