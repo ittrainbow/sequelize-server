@@ -1,8 +1,8 @@
-import express, { Router } from 'express'
+const express = require('express')
 
 const ticketsController = require('../controllers/ticketsController')
 
-const router: Router = express.Router()
+const router = express.Router()
 
 router.get('/:id', ticketsController.getAll)
 
