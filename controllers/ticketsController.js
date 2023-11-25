@@ -15,7 +15,7 @@ class TicketsController {
       return res.json(ticket)
     } catch (error) {
       const { status = 500, message } = error
-      return next(res.status(status).json(message))
+      return next(res.status(status).json(`tickets.create: ${message}`))
     }
   }
 
@@ -27,7 +27,7 @@ class TicketsController {
       return res.json(ticket)
     } catch (error) {
       const { status = 500, message } = error
-      return next(res.status(status).json(message))
+      return next(res.status(status).json(`tickets.update: ${message}`))
     }
   }
 
@@ -38,7 +38,7 @@ class TicketsController {
       return res.json(id)
     } catch (error) {
       const { status = 500, message } = error
-      return next(res.status(status).json(message))
+      return next(res.status(status).json(`tickets.delete: ${message}`))
     }
   }
 
@@ -51,7 +51,7 @@ class TicketsController {
       return res.json(tickets)
     } catch (error) {
       const { status = 500, message } = error
-      return next(res.status(status).json(message))
+      return next(res.status(status).json(`tickets.getAll: ${message}`))
     }
   }
 }
