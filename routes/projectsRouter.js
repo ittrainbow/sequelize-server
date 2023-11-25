@@ -1,8 +1,8 @@
-import express, { Router } from 'express'
+const express = require('express')
 
 const projectsController = require('../controllers/projectsController')
 
-const router: Router = express.Router()
+const router = express.Router()
 
 router.get('/getall', projectsController.getAll)
 
