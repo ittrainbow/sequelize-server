@@ -1,16 +1,14 @@
-import { Request, Response, NextFunction } from 'express'
-import { AppError, UserType } from '../types'
 const jsonwebtoken = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const { User } = require('../models')
 
-const createToken = ({ id, email, admin = false }: Pick<UserType, 'id' | 'email' | 'admin'>) => {
+const createToken = ({ id, email, admin = false }) => {
   return jsonwebtoken.sign({ id, email, admin }, process.env.SECRET_KEY, { expiresIn: '24h' })
 }
 
 class UsersController {
-  async signup(req: Request, res: Response, next: NextFunction) {
+  async signup(req, res, next) {
     const { email, password, name } = req.body
     if (!email || !password || !name) return next(res.status(400).json('Not enough data'))
 
@@ -24,7 +22,7 @@ class UsersController {
     return res.json({ user, token })
   }
 
-  async login(req: Request, res: Response, next: NextFunction) {
+  async login(req, res, next) {
     const { email, password } = req.body
 
     const user = await User.findOne({ where: { email } })
@@ -37,16 +35,16 @@ class UsersController {
     return res.json({ user, token })
   }
 
-  async auth(req: Request, res: Response, next: NextFunction) {
+  async auth(req, res, next) {
     const { authorization } = req.headers
     const headerToken = authorization && authorization.split(' ')[1]
 
     if (!headerToken) return next(res.status(401).json('User not authorized (token probably expired)'))
 
-    const findUser = async (id: number) => {
+    const findUser = async (id) => {
       await User.findOne({ where: { id } })
-        .then((response: { dataValues: UserType }) => response.dataValues)
-        .then((user: UserType) => {
+        .then((response) => response.dataValues)
+        .then((user) => {
           delete user.password
           const token = createToken(user)
           return res.json({ user, token })
@@ -54,7 +52,7 @@ class UsersController {
         .catch(() => next(res.status(401).json('User not authorized (token probably expired)')))
     }
 
-    jsonwebtoken.verify(headerToken, process.env.SECRET_KEY, (error: AppError, user: UserType) => {
+    jsonwebtoken.verify(headerToken, process.env.SECRET_KEY, (error, user) => {
       if (error) {
         const { status = 401, message } = error
         return next(res.status(status).json(message))
@@ -66,23 +64,23 @@ class UsersController {
     })
   }
 
-  async getAll(req: Request, res: Response, next: NextFunction) {
+  async getAll(req, res, next) {
     try {
       const users = await User.findAll()
       return res.json(users)
     } catch (error) {
-      const { status = 500, message } = error as AppError
+      const { status = 500, message } = error
       return next(res.status(status).json(message))
     }
   }
 
-  async update(req: Request, res: Response, next: NextFunction) {
+  async update(req, res, next) {
     try {
       const { name, id } = req.body
       await User.update({ name }, { where: { id } })
       return res.json('User updated')
     } catch (error) {
-      const { status = 403, message } = error as AppError
+      const { status = 403, message } = error
       return next(res.status(status).json(message))
     }
   }
