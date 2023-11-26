@@ -23,7 +23,12 @@ start()
 
 const models = require('./models')
 const router = require('./routes')
-app.use(cors({}))
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'http://192.168.1.99:3000/'],
+    methods: ['GET', 'POST', 'OPTIONS']
+  })
+)
 app.use(express.json())
 app.get('/', (req, res) => res.status(200).json({ message: 'app is up!' }))
 app.use('/api', router)
