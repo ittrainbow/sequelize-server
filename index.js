@@ -22,8 +22,9 @@ const start = async () => {
 start()
 
 const corsOptions = {
-  origin: ['http://localhost:3000', '*'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  // origin: ['http://localhost:3000', 'http://192.168.1.99:3000'],
+  origin: true,
+  allowedHeaders: ['Content-Type', 'Authorization, X-Requested-With'],
   methods: ['GET', 'POST', 'OPTIONS']
 }
 

@@ -23,13 +23,16 @@ class UsersController {
   }
 
   async login(req, res, next) {
+    console.log(200)
     const { email, password } = req.body
 
     const user = await User.findOne({ where: { email } })
     if (!user) return next(res.status(400).json('user.login: User does not exists'))
 
     let pwdCheck = bcrypt.compareSync(password, user.password)
-    if (!pwdCheck) return next(res.status(403).json('user.login: Wrong password'))
+    if (!pwdCheck) {
+      return next(res.status(403).json('user.login: Wrong password'))
+    }
 
     const token = createToken(user)
     return res.json({ user, token })
@@ -37,7 +40,6 @@ class UsersController {
 
   async auth(req, res, next) {
     const { authorization } = req.headers
-    console.log(200, authorization)
     const token = authorization && authorization.split(' ')[1]
     if (!token) return next(res.status(401).json('user.auth: No token'))
 
