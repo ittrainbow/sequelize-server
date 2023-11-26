@@ -2,8 +2,6 @@ const { Ticket } = require('../models')
 
 class TicketsController {
   async create(req, res, next) {
-    if (req.method === 'OPTIONS') return next(res.status(200))
-
     try {
       let { creator, description, issue, problem, projectid, severity, solution, status } = req.body
       const ticketData = { description, issue, problem, projectid, severity, solution, status }
@@ -22,8 +20,6 @@ class TicketsController {
   }
 
   async update(req, res, next) {
-    if (req.method === 'OPTIONS') return next(res.status(200))
-
     try {
       const ticket = req.body
       const { id } = ticket
@@ -36,8 +32,6 @@ class TicketsController {
   }
 
   async delete(req, res, next) {
-    if (req.method === 'OPTIONS') return next(res.status(200))
-
     try {
       const id = Number(req.body.id)
       await Ticket.destroy({ where: { id } })
@@ -49,8 +43,6 @@ class TicketsController {
   }
 
   async getAll(req, res, next) {
-    if (req.method === 'OPTIONS') return next(res.status(200))
-
     try {
       const { id } = req.params
       const tickets = await Ticket.findAll({

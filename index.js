@@ -21,20 +21,11 @@ const start = async () => {
 
 start()
 
-const corsOptions = {
-  // origin: ['http://localhost:3000', 'http://192.168.1.99:3000'],
-  // origin: true,
-  allowedHeaders: ['Content-Type', 'Authorization, X-Requested-With'],
-  methods: ['GET', 'POST', 'OPTIONS']
-}
-
 const models = require('./models')
 const router = require('./routes')
-app.use(cors(corsOptions))
+app.use(cors())
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin: *')
-  res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS')
-  res.header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token')
+  res.header('Access-Control-Allow-Origin', '*')
   next()
 })
 app.use(express.json())
