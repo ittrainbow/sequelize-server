@@ -25,7 +25,7 @@ const models = require('./models')
 const router = require('./routes')
 app.use(cors())
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Origin', '*')
   next()
 })
 app.use(express.json())
