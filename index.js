@@ -31,6 +31,12 @@ const corsOptions = {
 const models = require('./models')
 const router = require('./routes')
 app.use(cors(corsOptions))
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin: *')
+  res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS')
+  res.header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token')
+  next()
+})
 app.use(express.json())
 app.get('/', (req, res) => res.status(200).json({ message: 'app is up!' }))
 app.use('/api', router)
