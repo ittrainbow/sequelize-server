@@ -26,7 +26,7 @@ const router = require('./routes')
 app.use(
   cors({
     origin: ['http://localhost:3000', 'http://192.168.1.99:3000/'],
-    methods: ['GET', 'POST', 'OPTIONS']
+    methods: ['GET', 'POST', 'PUT', 'OPTIONS']
   })
 )
 app.use(express.json())
