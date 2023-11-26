@@ -36,8 +36,8 @@ class UsersController {
   }
 
   async auth(req, res, next) {
-    console.log(200, req.headers)
     const { authorization } = req.headers
+    console.log(200, authorization)
     const token = authorization && authorization.split(' ')[1]
     if (!token) return next(res.status(401).json('user.auth: No token'))
 
