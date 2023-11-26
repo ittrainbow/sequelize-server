@@ -9,6 +9,7 @@ const createToken = ({ id, email, admin = false }) => {
 
 class UsersController {
   async signup(req, res, next) {
+    if (req.method === 'OPTIONS') next()
     const { email, password, name } = req.body
     if (!email || !password || !name) return next(res.status(400).json('user.signup: Not enough data'))
 
@@ -23,7 +24,7 @@ class UsersController {
   }
 
   async login(req, res, next) {
-    console.log(200)
+    if (req.method === 'OPTIONS') next()
     const { email, password } = req.body
 
     const user = await User.findOne({ where: { email } })
@@ -39,6 +40,7 @@ class UsersController {
   }
 
   async auth(req, res, next) {
+    if (req.method === 'OPTIONS') next()
     const { authorization } = req.headers
     const token = authorization && authorization.split(' ')[1]
     if (!token) return next(res.status(401).json('user.auth: No token'))
