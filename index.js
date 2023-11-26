@@ -23,7 +23,7 @@ start()
 
 const corsOptions = {
   // origin: ['http://localhost:3000', 'http://192.168.1.99:3000'],
-  origin: true,
+  // origin: true,
   allowedHeaders: ['Content-Type', 'Authorization, X-Requested-With'],
   methods: ['GET', 'POST', 'OPTIONS']
 }
