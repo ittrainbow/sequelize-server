@@ -1,7 +1,9 @@
 const { Project } = require('../models')
 
 class ProjectsController {
-  async getAll(_, res, next) {
+  async getAll(req, res, next) {
+    if (req.method === 'OPTIONS') return next(res.status(200))
+
     try {
       const projects = await Project.findAll()
       return res.json(projects)

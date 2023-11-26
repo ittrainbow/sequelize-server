@@ -9,7 +9,8 @@ const createToken = ({ id, email, admin = false }) => {
 
 class UsersController {
   async signup(req, res, next) {
-    if (req.method === 'OPTIONS') next()
+    if (req.method === 'OPTIONS') return next(res.status(200))
+
     const { email, password, name } = req.body
     if (!email || !password || !name) return next(res.status(400).json('user.signup: Not enough data'))
 
@@ -24,8 +25,10 @@ class UsersController {
   }
 
   async login(req, res, next) {
-    if (req.method === 'OPTIONS') next()
+    if (req.method === 'OPTIONS') return next(res.status(200))
+
     const { email, password } = req.body
+    if (!email || !password) return next(res.status(400).json('user.login: Not enough data'))
 
     const user = await User.findOne({ where: { email } })
     if (!user) return next(res.status(400).json('user.login: User does not exists'))
@@ -40,7 +43,8 @@ class UsersController {
   }
 
   async auth(req, res, next) {
-    if (req.method === 'OPTIONS') next()
+    if (req.method === 'OPTIONS') return next(res.status(200))
+
     const { authorization } = req.headers
     const token = authorization && authorization.split(' ')[1]
     if (!token) return next(res.status(401).json('user.auth: No token'))
@@ -68,6 +72,8 @@ class UsersController {
   }
 
   async getAll(req, res, next) {
+    if (req.method === 'OPTIONS') return next(res.status(200))
+
     try {
       const users = await User.findAll()
       return res.json(users)
@@ -78,6 +84,8 @@ class UsersController {
   }
 
   async update(req, res, next) {
+    if (req.method === 'OPTIONS') return next(res.status(200))
+
     try {
       const { name, id } = req.body
       await User.update({ name }, { where: { id } })
