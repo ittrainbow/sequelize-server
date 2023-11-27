@@ -11,7 +11,10 @@ class TicketsController {
         creator,
         updater: creator
       }
-      const ticket = await Ticket.create({ ...ticketData, ...ticketUser })
+      const last = await Ticket.findOne({
+        order: [['id', 'DESC']]
+      })
+      const ticket = await Ticket.create({ ...ticketData, ...ticketUser, id: last.id + 1 })
       return res.json(ticket)
     } catch (error) {
       const { status = 500, message } = error
