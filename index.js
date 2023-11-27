@@ -28,10 +28,9 @@ app.use(
     origin: [
       'http://localhost:3000',
       'http://192.168.1.99:3000/',
-      'http://tickets-app-aeeed.web.app/',
       'https://tickets-app-aeeed.web.app/'
     ],
-    methods: ['GET', 'POST', 'PUT', 'OPTIONS']
+    methods: ['GET', 'POST', 'PUT']
   })
 )
 app.use(express.json())
