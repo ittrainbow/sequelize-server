@@ -6,6 +6,8 @@ const router = express.Router()
 
 router.get('/:id', ticketsController.getAll)
 
+router.get('/get/last', ticketsController.getLast)
+
 router.put('/update', ticketsController.update)
 
 router.post('/create', ticketsController.create)

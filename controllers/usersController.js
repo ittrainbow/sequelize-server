@@ -65,7 +65,7 @@ class UsersController {
     })
   }
 
-  async getAll(req, res, next) {
+  async getAll(_, res, next) {
     try {
       const users = await User.findAll()
       return res.json(users)
