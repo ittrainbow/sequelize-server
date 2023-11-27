@@ -25,7 +25,12 @@ const models = require('./models')
 const router = require('./routes')
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://192.168.1.99:3000/', 'https://tickets-app-aeeed.web.app/'],
+    origin: [
+      'http://localhost:3000',
+      'http://192.168.1.99:3000/',
+      'http://tickets-app-aeeed.web.app/',
+      'https://tickets-app-aeeed.web.app/'
+    ],
     methods: ['GET', 'POST', 'PUT', 'OPTIONS']
   })
 )
