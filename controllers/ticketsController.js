@@ -57,18 +57,6 @@ class TicketsController {
       return next(res.status(status).json(`tickets.getAll: ${message}`))
     }
   }
-
-  async getLast(_, res, next) {
-    try {
-      const ticket = await Ticket.findOne({
-        order: [['id', 'DESC']]
-      })
-      return res.json(Number(ticket.id) + 1)
-    } catch (error) {
-      const { status = 500, message } = error
-      return next(res.status(status).json(`tickets.getLast: ${message}`))
-    }
-  }
 }
 
 module.exports = new TicketsController()

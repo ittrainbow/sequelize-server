@@ -23,12 +23,12 @@ start()
 
 const models = require('./models')
 const router = require('./routes')
-// app.use(
-//   cors({
-//     origin: ['http://localhost:3000', 'http://192.168.1.99:3000/', 'https://tickets-app-aeeed.web.app/'],
-//     methods: ['GET', 'POST', 'PUT']
-//   })
-// )
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'http://192.168.1.99:3000/', 'https://tickets-app-aeeed.web.app/'],
+    methods: ['GET', 'POST', 'PUT']
+  })
+)
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authentication')
